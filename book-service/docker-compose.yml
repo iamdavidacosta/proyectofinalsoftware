@@ -1,0 +1,12 @@
+services:
+  book-service:
+    build:
+      dockerfile: Dockerfile
+    container_name: book-service
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./data:/app/data
+
+#volumes:
+#  book-data:

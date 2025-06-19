@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Microservicios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+        .dashboard-card {
+            border-radius: 1.5rem;
+            border: none;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            background: rgba(255,255,255,0.95);
+        }
+        .dashboard-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .dashboard-logo svg {
+            width: 56px;
+            height: 56px;
+        }
+        .dashboard-title {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #2d3748;
+        }
+        .dashboard-btn {
+            font-size: 1.15rem;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            transition: transform 0.08s;
+        }
+        .dashboard-btn:active {
+            transform: scale(0.97);
+        }
+        .dashboard-btn-outline-primary {
+            border: 2px solid #6366f1;
+            color: #6366f1;
+            background: #fff;
+        }
+        .dashboard-btn-outline-primary:hover {
+            background: #6366f1;
+            color: #fff;
+        }
+        .dashboard-btn-outline-secondary {
+            border: 2px solid #64748b;
+            color: #64748b;
+            background: #fff;
+        }
+        .dashboard-btn-outline-secondary:hover {
+            background: #64748b;
+            color: #fff;
+        }
+        .dashboard-btn-outline-success {
+            border: 2px solid #10b981;
+            color: #10b981;
+            background: #fff;
+        }
+        .dashboard-btn-outline-success:hover {
+            background: #10b981;
+            color: #fff;
+        }
+        @media (max-width: 500px) {
+            .dashboard-card {
+                padding: 1.5rem 0.5rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex flex-column justify-content-center align-items-center min-vh-100">
+    <div class="card dashboard-card shadow p-4" style="max-width: 420px; width: 100%;">
+        <div class="dashboard-logo">
+            <!-- Simple SVG logo -->
+            <svg viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" fill="#6366f1" opacity="0.12"/>
+                <rect x="18" y="18" width="28" height="28" rx="8" fill="#6366f1" opacity="0.25"/>
+                <circle cx="32" cy="32" r="10" fill="#6366f1"/>
+            </svg>
+        </div>
+        <h1 class="mb-4 text-center dashboard-title">Microservicios</h1>
+        <div class="d-grid gap-3">
+            <a href="/calc" class="btn dashboard-btn dashboard-btn-outline-primary btn-lg">Cálculo Científico</a>
+            <a href="/grades" class="btn dashboard-btn dashboard-btn-outline-secondary btn-lg">Calificaciones</a>
+            <a href="/library" class="btn dashboard-btn dashboard-btn-outline-success btn-lg">Biblioteca</a>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+services:
+  grade-service:
+    build:
+      dockerfile: Dockerfile
+    container_name: grade-service
+    ports:
+      - "8081:8081"
+    volumes:
+      - grade-data:/data
+
+volumes:
+  grade-data:

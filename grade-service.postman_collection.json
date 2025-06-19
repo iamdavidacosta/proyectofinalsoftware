@@ -1,0 +1,152 @@
+{
+	"info": {
+		"_postman_id": "4d388afe-6cf3-4099-a982-7600263d3079",
+		"name": "grade-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28388236"
+	},
+	"item": [
+		{
+			"name": "Crear estudiante",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\":\"s1\",\r\n\"name\":\"Daniel Martinez\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/students"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener estudiantes",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/students"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener cursos",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/courses"
+			},
+			"response": []
+		},
+		{
+			"name": "Crear cursos",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\":\"l1\",\r\n\"name\":\"arquitectura limpia\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/courses"
+			},
+			"response": []
+		},
+		{
+			"name": "Asignar nota numerica",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/grades/numeric?studentId=s1&courseId=l1&value=8.5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"grades",
+						"numeric"
+					],
+					"query": [
+						{
+							"key": "studentId",
+							"value": "s1"
+						},
+						{
+							"key": "courseId",
+							"value": "l1"
+						},
+						{
+							"key": "value",
+							"value": "8.5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asignar nota qualitativa",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/grades/qualitative?studentId=s1&courseId=l1&value=APROBO",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"grades",
+						"qualitative"
+					],
+					"query": [
+						{
+							"key": "studentId",
+							"value": "s1"
+						},
+						{
+							"key": "courseId",
+							"value": "l1"
+						},
+						{
+							"key": "value",
+							"value": "APROBO"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

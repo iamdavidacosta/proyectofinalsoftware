@@ -1,0 +1,30 @@
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+    min-height: 100vh;
+}
+.container {
+    margin-top: 2rem;
+}
+.card {
+    border-radius: 1rem;
+    border: none;
+}
+pre {
+    background-color: #f6f8fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    color: #333;
+    word-break: break-all;
+}
+.btn-link {
+    color: #6c757d;
+    text-decoration: none;
+}
+.btn-link:hover {
+    color: #495057;
+    text-decoration: underline;
+}
+.form-label {
+    font-weight: 600;
+}

@@ -1,0 +1,4 @@
+c8549f8f-e2cd-42f0-a31e-e2a8c0d5ee77;Juan Pérez;ESTUDIANTE
+a26acea7-c246-4d57-9de7-600b9148d7e4;María López;DOCENTE
+23c9f1cd-dced-4a60-9c94-d626ce84988c;Carlos Ruiz;EMPLEADO
+bab4e4af-a2c2-433b-bd00-aa30ddd6882a;Ana Pérez;ESTUDIANTE
