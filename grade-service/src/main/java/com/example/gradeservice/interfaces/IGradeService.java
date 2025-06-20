@@ -11,4 +11,6 @@ public interface IGradeService {
     Grade assignNumeric(String studentId, String courseId, double value);
     Grade assignQualitative(String studentId, String courseId, String value);
     List<Grade> gradesByCourse(String courseId);
+    List<NumericGrade> listNumericGrades();
+    List<QualitativeGrade> listQualitativeGrades();
 }

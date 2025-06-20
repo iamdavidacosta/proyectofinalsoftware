@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error - Portal MVC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">¡Oops! Algo salió mal</h4>
+                <p th:text="${error}">Ha ocurrido un error inesperado.</p>
+                <hr>
+                <p class="mb-0">
+                    <a href="/" class="btn btn-primary">Volver al inicio</a>
+                    <button onclick="history.back()" class="btn btn-secondary">Volver atrás</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

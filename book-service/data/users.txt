@@ -2,3 +2,13 @@ c8549f8f-e2cd-42f0-a31e-e2a8c0d5ee77;Juan Pérez;ESTUDIANTE
 a26acea7-c246-4d57-9de7-600b9148d7e4;María López;DOCENTE
 23c9f1cd-dced-4a60-9c94-d626ce84988c;Carlos Ruiz;EMPLEADO
 bab4e4af-a2c2-433b-bd00-aa30ddd6882a;Ana Pérez;ESTUDIANTE
+a46be2b6-4cca-48f8-bc6e-0588a847d3c0;Daniel Baquero;ESTUDIANTE
+e26f6e36-f64f-4893-bd02-697f1eb20522;Daniel Baquero;ESTUDIANTE
+5480857c-d037-4e03-8fb5-e48595b24cb0;Daniel Baquero;ESTUDIANTE
+368ef775-889c-4eef-9a6f-18a0c09a778e;Johan Caicedo;EMPLEADO
+2ef0cf5a-a86b-4176-bd97-09e0bf656194;Juan Perez;DOCENTE
+d992d841-e124-4d60-8dd4-32b916f64a39;Daniel Baquero2;ESTUDIANTE
+67e740d0-ca98-431f-8dda-329ddb74bdf5;Ruben Urrego;ESTUDIANTE
+f321a27d-b3f3-4778-a123-8bed944304fd;Matematicas especiales;DOCENTE
+0240aff9-34c7-492d-a74d-c69b2e2f2d7c;Software 1;EMPLEADO
+faa47c7e-c775-4f9e-a3dc-c52a89e35d98;Johan Caicedo;ESTUDIANTE

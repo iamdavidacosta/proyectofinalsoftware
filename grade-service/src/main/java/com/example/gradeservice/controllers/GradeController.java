@@ -45,4 +45,14 @@ public class GradeController {
     public List<Grade> getByCourse(@PathVariable String id) {
         return service.gradesByCourse(id);
     }
+
+    @GetMapping("/grades/numeric")
+    public List<NumericGrade> getNumericGrades() {
+        return service.listNumericGrades();
+    }
+
+    @GetMapping("/grades/qualitative")
+    public List<QualitativeGrade> getQualitativeGrades() {
+        return service.listQualitativeGrades();
+    }
 }

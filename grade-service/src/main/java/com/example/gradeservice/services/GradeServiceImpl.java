@@ -59,4 +59,14 @@ public class GradeServiceImpl implements IGradeService {
     public List<Grade> gradesByCourse(String courseId) {
         return gradeRepo.findByCourseId(courseId);
     }
+
+    @Override
+    public List<NumericGrade> listNumericGrades() {
+        return gradeRepo.findAllNumericGrades();
+    }
+
+    @Override
+    public List<QualitativeGrade> listQualitativeGrades() {
+        return gradeRepo.findAllQualitativeGrades();
+    }
 }

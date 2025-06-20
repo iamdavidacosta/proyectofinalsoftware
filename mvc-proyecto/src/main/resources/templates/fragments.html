@@ -1,23 +1,298 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+
+<!-- Fragmentos para Cálculo Científico -->
 <div th:fragment="matrixResult">
-    <pre th:text="${matrixResult}"></pre>
+    <div th:if="${matrixResult.error}" class="alert alert-danger" th:text="${matrixResult.error}"></div>
+    <div th:unless="${matrixResult.error}" class="alert alert-success">
+        <h5>Resultado de Multiplicación:</h5>
+        <pre th:text="${matrixResult}"></pre>
+    </div>
 </div>
+
 <div th:fragment="integrateResult">
-    <pre th:text="${integrateResult}"></pre>
+    <div th:if="${integrateResult.error}" class="alert alert-danger" th:text="${integrateResult.error}"></div>
+    <div th:unless="${integrateResult.error}" class="alert alert-success">
+        <h5>Resultado de Integración:</h5>
+        <pre th:text="${integrateResult}"></pre>
+    </div>
 </div>
-<div th:fragment="gradeCreateResult">
-    <pre th:text="${gradeCreateResult}"></pre>
-</div>
-<div th:fragment="gradesList">
-    <pre th:text="${gradesList}"></pre>
-</div>
+
+<!-- Fragmentos para Biblioteca -->
 <div th:fragment="bookCreateResult">
-    <pre th:text="${bookCreateResult}"></pre>
+    <div th:if="${bookCreateResult.isbn}" class="alert alert-success">
+        <h5>Libro creado exitosamente:</h5>
+        <p><strong>ISBN:</strong> <span th:text="${bookCreateResult.isbn}"></span></p>
+        <p><strong>Título:</strong> <span th:text="${bookCreateResult.title}"></span></p>
+    </div>
+    <div th:unless="${bookCreateResult.isbn}" class="alert alert-warning">
+        <p>No se pudo crear el libro. Verifique los datos.</p>
+    </div>
 </div>
+
 <div th:fragment="booksList">
-    <pre th:text="${booksList}"></pre>
+    <div th:if="${#lists.isEmpty(booksList)}" class="alert alert-info">
+        No hay libros registrados.
+    </div>
+    <div th:unless="${#lists.isEmpty(booksList)}">
+        <div class="list-group">
+            <div th:each="book : ${booksList}" class="list-group-item">
+                <h6 class="mb-1" th:text="${book.title}">Título del libro</h6>
+                <small th:text="'ISBN: ' + ${book.isbn}">ISBN</small>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div th:fragment="userCreateResult">
+    <div th:if="${userCreateResult.id}" class="alert alert-success">
+        <h5>Usuario creado exitosamente:</h5>
+        <p><strong>ID:</strong> <span th:text="${userCreateResult.id}"></span></p>
+        <p><strong>Nombre:</strong> <span th:text="${userCreateResult.name}"></span></p>
+        <p><strong>Rol:</strong> <span th:text="${userCreateResult.role}"></span></p>
+    </div>
+    <div th:unless="${userCreateResult.id}" class="alert alert-warning">
+        <p>No se pudo crear el usuario. Verifique los datos.</p>
+    </div>
+</div>
+
+<div th:fragment="usersList">
+    <div th:if="${#lists.isEmpty(usersList)}" class="alert alert-info">
+        No hay usuarios registrados.
+    </div>
+    <div th:unless="${#lists.isEmpty(usersList)}">
+        <div class="list-group">
+            <div th:each="user : ${usersList}" class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">
+                        <span th:if="${user.role == 'ESTUDIANTE'}">👨‍🎓</span>
+                        <span th:if="${user.role == 'EMPLEADO'}">👨‍💼</span>
+                        <span th:if="${user.role == 'DOCENTE'}">👨‍🏫</span>
+                        <span th:text="${user.name}">Nombre del usuario</span>
+                    </div>
+                    <small class="text-muted">
+                        <span th:text="'ID: ' + ${user.id}">ID</span> | 
+                        <span th:text="${user.role}">Rol</span>
+                    </small>
+                </div>
+                <span th:if="${user.role == 'ESTUDIANTE'}" class="badge bg-primary rounded-pill">Estudiante</span>
+                <span th:if="${user.role == 'EMPLEADO'}" class="badge bg-warning rounded-pill">Empleado</span>
+                <span th:if="${user.role == 'DOCENTE'}" class="badge bg-success rounded-pill">Docente</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="loanCreateResult">
+    <div th:if="${loanCreateResult.loanId}" class="alert alert-success">
+        <h5>Préstamo creado exitosamente:</h5>
+        <p><strong>ID:</strong> <span th:text="${loanCreateResult.loanId}"></span></p>
+        <p><strong>Usuario:</strong> <span th:text="${loanCreateResult.userId}"></span></p>
+        <p><strong>ISBN:</strong> <span th:text="${loanCreateResult.isbn}"></span></p>
+        <p><strong>Fecha:</strong> <span th:text="${loanCreateResult.loanDate}"></span></p>
+    </div>
+    <div th:unless="${loanCreateResult.loanId}" class="alert alert-warning">
+        <p>No se pudo crear el préstamo. Verifique los datos.</p>
+    </div>
+</div>
+
+<div th:fragment="loansList">
+    <div th:if="${#lists.isEmpty(loansList)}" class="alert alert-info">
+        No hay préstamos registrados.
+    </div>
+    <div th:unless="${#lists.isEmpty(loansList)}">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>📖 Libro</th>
+                        <th>👤 Usuario</th>
+                        <th>📅 Fecha Préstamo</th>
+                        <th>📅 Fecha Vencimiento</th>
+                        <th>📊 Estado</th>
+                        <th>💰 Multa</th>
+                    </tr>
+                </thead>                <tbody>
+                    <tr th:each="loan : ${loansList}">
+                        <td>
+                            <div class="fw-bold">
+                                <span th:each="book : ${booksList}" th:if="${book.isbn == loan.isbn}" th:text="${book.title}">Título del Libro</span>
+                                <span th:unless="${#lists.contains(booksList.![isbn], loan.isbn)}" class="text-muted">Libro no encontrado</span>
+                            </div>
+                            <small class="text-muted" th:text="'ISBN: ' + ${loan.isbn}">ISBN</small>
+                        </td>
+                        <td>
+                            <div class="fw-bold">
+                                <span th:each="user : ${usersList}" th:if="${user.id == loan.userId}" th:text="${user.name}">Nombre del Usuario</span>
+                                <span th:unless="${#lists.contains(usersList.![id], loan.userId)}" class="text-muted">Usuario no encontrado</span>
+                            </div>
+                            <small class="text-muted" th:text="'ID: ' + ${loan.userId}">User ID</small>
+                        </td>
+                        <td th:text="${loan.loanDate}">Fecha préstamo</td>
+                        <td th:text="${loan.dueDate}">Fecha vencimiento</td>
+                        <td>
+                            <span th:if="${loan.returnDate != null}" class="badge bg-success">Devuelto</span>
+                            <span th:if="${loan.returnDate == null and loan.daysOverdue == 0}" class="badge bg-primary">Activo</span>
+                            <span th:if="${loan.returnDate == null and loan.daysOverdue > 0}" class="badge bg-danger">
+                                Vencido (<span th:text="${loan.daysOverdue}">0</span> días)
+                            </span>
+                        </td>
+                        <td>
+                            <span th:if="${loan.fine > 0}" class="text-danger fw-bold">
+                                $<span th:text="${loan.fine}">0</span>
+                            </span>
+                            <span th:if="${loan.fine == 0}" class="text-success">Sin multa</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="libraryReport">
+    <div th:if="${report.error}" class="alert alert-danger" th:text="${report.error}"></div>
+    <div th:unless="${report.error}" class="alert alert-info">
+        <h5>Reporte de Biblioteca:</h5>
+        <pre th:text="${report}"></pre>
+    </div>
+</div>
+
+<!-- Fragmentos para Calificaciones -->
+<div th:fragment="studentCreateResult">
+    <div th:if="${studentCreateResult.id}" class="alert alert-success">
+        <h5>Estudiante creado exitosamente:</h5>
+        <p><strong>ID:</strong> <span th:text="${studentCreateResult.id}"></span></p>
+        <p><strong>Nombre:</strong> <span th:text="${studentCreateResult.name}"></span></p>
+    </div>
+    <div th:unless="${studentCreateResult.id}" class="alert alert-warning">
+        <p>No se pudo crear el estudiante. Verifique los datos.</p>
+    </div>
+</div>
+
+<div th:fragment="studentsList">
+    <div th:if="${#lists.isEmpty(studentsList)}" class="alert alert-info">
+        No hay estudiantes registrados.
+    </div>
+    <div th:unless="${#lists.isEmpty(studentsList)}">
+        <div class="list-group">
+            <div th:each="student : ${studentsList}" class="list-group-item">
+                <h6 class="mb-1" th:text="${student.name}">Nombre del estudiante</h6>
+                <small th:text="'ID: ' + ${student.id}">ID</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="courseCreateResult">
+    <div th:if="${courseCreateResult.id}" class="alert alert-success">
+        <h5>Curso creado exitosamente:</h5>
+        <p><strong>ID:</strong> <span th:text="${courseCreateResult.id}"></span></p>
+        <p><strong>Nombre:</strong> <span th:text="${courseCreateResult.name}"></span></p>
+    </div>
+    <div th:unless="${courseCreateResult.id}" class="alert alert-warning">
+        <p>No se pudo crear el curso. Verifique los datos.</p>
+    </div>
+</div>
+
+<div th:fragment="coursesList">
+    <div th:if="${#lists.isEmpty(coursesList)}" class="alert alert-info">
+        No hay cursos registrados.
+    </div>
+    <div th:unless="${#lists.isEmpty(coursesList)}">
+        <div class="list-group">
+            <div th:each="course : ${coursesList}" class="list-group-item">
+                <h6 class="mb-1" th:text="${course.name}">Nombre del curso</h6>
+                <small th:text="'ID: ' + ${course.id}">ID</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="gradeResult">
+    <div th:if="${gradeResult != null and #maps.containsKey(gradeResult, 'error')}" class="alert alert-danger" th:text="${gradeResult.error}"></div>
+    <div th:unless="${gradeResult != null and #maps.containsKey(gradeResult, 'error')}" class="alert alert-success">
+        <h5>Calificación asignada exitosamente:</h5>
+        <div th:if="${#maps.containsKey(gradeResult, 'id')}">
+            <p><strong>ID de Calificación:</strong> <span th:text="${gradeResult.id}"></span></p>
+            <p><strong>Estudiante:</strong> <span th:text="${gradeResult.student.name + ' (ID: ' + gradeResult.student.id + ')'}"></span></p>
+            <p><strong>Curso:</strong> <span th:text="${gradeResult.course.name + ' (ID: ' + gradeResult.course.id + ')'}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${gradeResult.date}"></span></p>            <p th:if="${#maps.containsKey(gradeResult, 'numericValue')}" ><strong>Calificación Numérica:</strong> <span th:text="${gradeResult.numericValue}"></span></p>
+            <p th:if="${#maps.containsKey(gradeResult, 'qualitativeValue')}"><strong>Calificación Cualitativa:</strong> <span th:text="${gradeResult.qualitativeValue}"></span></p>
+        </div>
+        <div th:unless="${#maps.containsKey(gradeResult, 'id')}">
+            <pre th:text="${gradeResult}"></pre>
+        </div>
+    </div>
+</div>
+
+<!-- Fragmentos para listar calificaciones -->
+<div th:fragment="numericGradesList">
+    <div th:if="${#lists.isEmpty(numericGradesList)}" class="alert alert-info">
+        No hay calificaciones numéricas registradas.
+    </div>
+    <div th:unless="${#lists.isEmpty(numericGradesList)}">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Estudiante</th>
+                        <th>Curso</th>
+                        <th>Calificación</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="grade : ${numericGradesList}">
+                        <td th:text="${grade.id}">ID</td>
+                        <td th:text="${grade.student.name + ' (ID: ' + grade.student.id + ')'}">Estudiante</td>
+                        <td th:text="${grade.course.name + ' (ID: ' + grade.course.id + ')'}">Curso</td>
+                        <td>
+                            <span class="badge bg-primary" th:text="${grade.numericValue}">Valor</span>
+                        </td>
+                        <td th:text="${grade.date}">Fecha</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="qualitativeGradesList">
+    <div th:if="${#lists.isEmpty(qualitativeGradesList)}" class="alert alert-info">
+        No hay calificaciones cualitativas registradas.
+    </div>
+    <div th:unless="${#lists.isEmpty(qualitativeGradesList)}">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Estudiante</th>
+                        <th>Curso</th>
+                        <th>Calificación</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="grade : ${qualitativeGradesList}">
+                        <td th:text="${grade.id}">ID</td>
+                        <td th:text="${grade.student.name + ' (ID: ' + grade.student.id + ')'}">Estudiante</td>
+                        <td th:text="${grade.course.name + ' (ID: ' + grade.course.id + ')'}">Curso</td>
+                        <td>
+                            <span class="badge" 
+                                  th:class="${grade.qualitativeValue == 'APROBO' or grade.qualitativeValue == 'EXCELENTE' or grade.qualitativeValue == 'BUENO' ? 'badge bg-success' : 'badge bg-danger'}"
+                                  th:text="${grade.qualitativeValue}">Valor</span>
+                        </td>
+                        <td th:text="${grade.date}">Fecha</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

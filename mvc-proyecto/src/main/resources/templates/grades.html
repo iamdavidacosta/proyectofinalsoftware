@@ -2,47 +2,926 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Calificaciones</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <style>
-        body { font-family: 'Montserrat', Arial, sans-serif; }
-        .card { border-radius: 1.2rem; border: none; box-shadow: 0 4px 24px 0 rgba(31,38,135,0.09);}
-        .back-link { color: #6366f1; text-decoration: none; font-weight: 600;}
-        .back-link:hover { text-decoration: underline; }
-        .form-label { font-weight: 600; }
-        .btn-primary, .btn-secondary { border-radius: 0.7rem; font-weight: 600; }
+    <title>Calificaciones - Sistema de Gestión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>    <style>
+        body {
+            background: linear-gradient(135deg, #dda0dd 0%, #da70d6 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar-modern {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-modern .navbar-brand,
+        .navbar-modern .nav-link {
+            color: white !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }        .navbar-modern .nav-link:hover {
+            color: #dda0dd !important;
+            transform: translateY(-2px);
+        }
+        
+        .navbar-modern .nav-link.active {
+            color: #dda0dd !important;
+            border-bottom: 2px solid #dda0dd;
+        }
+        
+        .hero-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modern-tabs {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .modern-tabs .nav-link {
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin: 0 0.25rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+        
+        .modern-tabs .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateY(-2px);
+        }        .modern-tabs .nav-link.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #dda0dd;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+          .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15);
+        }
+        
+        .glass-card .card-header {
+            background: linear-gradient(45deg, #dda0dd, #da70d6);
+            color: white;
+            border: none;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .glass-card .card-body {
+            padding: 2rem;
+        }
+        
+        .form-control-modern {
+            border: 2px solid rgba(221, 160, 221, 0.3);
+            border-radius: 15px;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+        
+        .form-control-modern:focus {
+            border-color: #dda0dd;
+            box-shadow: 0 0 0 0.2rem rgba(221, 160, 221, 0.25);
+            background: white;
+        }
+        
+        .btn-modern {
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary-grade {
+            background: linear-gradient(45deg, #dda0dd, #da70d6);
+            color: white;
+        }
+        
+        .btn-primary-grade:hover {
+            background: linear-gradient(45deg, #da70d6, #dda0dd);
+            transform: scale(1.05);
+            color: white;
+        }
+        
+        .btn-success-grade {
+            background: linear-gradient(45deg, #90ee90, #32cd32);
+            color: white;
+        }
+        
+        .btn-success-grade:hover {
+            background: linear-gradient(45deg, #32cd32, #90ee90);
+            transform: scale(1.05);
+            color: white;
+        }
+        
+        .btn-info-grade {
+            background: linear-gradient(45deg, #87ceeb, #4682b4);
+            color: white;
+        }
+        
+        .btn-info-grade:hover {
+            background: linear-gradient(45deg, #4682b4, #87ceeb);
+            transform: scale(1.05);
+            color: white;
+        }
+        
+        .icon-header {
+            font-size: 2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .alert-success-grade {
+            background: linear-gradient(45deg, #90ee90, #32cd32);
+            color: white;
+            border: none;
+            border-radius: 15px;
+        }
+        
+        .alert-error-grade {
+            background: linear-gradient(45deg, #ff6b6b, #ff4757);
+            color: white;
+            border: none;
+            border-radius: 15px;
+        }
+        
+        .stats-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 0.5rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .table-modern {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-modern th {
+            background: linear-gradient(45deg, #dda0dd, #da70d6);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+        }
+        
+        .table-modern td {
+            padding: 1rem;
+            border: none;
+            border-bottom: 1px solid rgba(221, 160, 221, 0.1);
+        }
+        
+        .form-select-modern {
+            border: 2px solid rgba(221, 160, 221, 0.3);
+            border-radius: 15px;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+        
+        .form-select-modern:focus {
+            border-color: #dda0dd;
+            box-shadow: 0 0 0 0.2rem rgba(221, 160, 221, 0.25);
+            background: white;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-header {
+                padding: 1rem;
+            }
+            
+            .hero-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .glass-card .card-body {
+                padding: 1rem;
+            }
+            
+            .modern-tabs {
+                padding: 0.5rem;
+            }
+            
+            .modern-tabs .nav-link {
+                padding: 0.5rem 1rem;
+                margin: 0.1rem;
+                font-size: 0.9rem;
+            }
+            
+            .stats-card {
+                margin: 0.25rem 0;
+                padding: 1rem;
+            }
+            
+            .btn-modern {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .table-responsive {
+                border-radius: 15px;
+                overflow: hidden;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-header h1 {
+                font-size: 1.25rem;
+            }
+            
+            .modern-tabs .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+              .form-control-modern,
+            .form-select-modern {
+                font-size: 0.9rem;
+            }
+        }
+        
+        .icon-header {
+            font-size: 2rem;
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
 <div class="container py-4">
-    <a href="/" class="back-link mb-3 d-inline-block">&larr; Volver al Dashboard</a>
-    <div class="card shadow p-4 mx-auto" style="max-width: 500px;">
-        <h2 class="mb-4 text-center">Calificaciones</h2>
-        <form id="gradesForm">
-            <div class="mb-3"><label class="form-label">ID Estudiante</label><input id="studentId" name="studentId" class="form-control"/></div>
-            <div class="mb-3"><label class="form-label">ID Curso</label><input id="courseId" name="courseId" class="form-control"/></div>
-            <div class="mb-3"><label class="form-label">Valor</label><input id="value" name="value" type="text" class="form-control"/></div>
-            <div class="mb-3">
-                <label class="form-label">Tipo</label>
-                <select id="type" name="gradeType" class="form-select">
-                    <option value="NUMERIC">NUMÉRICA</option>
-                    <option value="LETTER">LETRA</option>
-                </select>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-modern">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-house-door me-2"></i>Portal Principal
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="/calc">
+                    <i class="bi bi-calculator me-1"></i>Cálculo
+                </a>
+                <a class="nav-link active" href="/grades">
+                    <i class="bi bi-mortarboard me-1"></i>Calificaciones
+                </a>
+                <a class="nav-link" href="/library">
+                    <i class="bi bi-book me-1"></i>Biblioteca
+                </a>
             </div>
-            <div class="d-grid gap-2">
-                <button type="button" id="createGradeBtn" class="btn btn-primary">Crear</button>
-                <button type="button" id="listGradesBtn" class="btn btn-secondary">Listar</button>
-            </div>
-        </form>
-        <pre id="gradeResult" class="mt-3"></pre>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <div class="hero-header">
+        <h1 class="display-5 fw-bold mb-3">
+            <i class="bi bi-mortarboard icon-header"></i>
+            Gestión de Calificaciones
+        </h1>
+        <p class="lead mb-0">
+            Sistema completo para administrar estudiantes, cursos y calificaciones académicas
+        </p>
     </div>
-</div>
-<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
-<script th:src="@{/js/ajax.js}"></script>
+
+    <!-- Modern Tabs -->
+    <div class="modern-tabs">
+        <ul class="nav nav-tabs border-0" id="gradesTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button" role="tab">
+                    <i class="bi bi-people me-2"></i>Estudiantes
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="courses-tab" data-bs-toggle="tab" data-bs-target="#courses" type="button" role="tab">
+                    <i class="bi bi-journal-bookmark me-2"></i>Cursos
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="grades-tab" data-bs-toggle="tab" data-bs-target="#grades" type="button" role="tab">
+                    <i class="bi bi-clipboard-plus me-2"></i>Asignar Calificaciones
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="list-grades-tab" data-bs-toggle="tab" data-bs-target="#list-grades" type="button" role="tab">
+                    <i class="bi bi-list-check me-2"></i>Ver Calificaciones
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content" id="gradesTabContent">
+        <!-- Gestión de Estudiantes -->
+        <div class="tab-pane fade show active" id="students" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-person-plus me-2"></i>Crear Nuevo Estudiante
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="createStudentForm">
+                                <div class="mb-3">
+                                    <label for="studentId" class="form-label fw-bold">
+                                        <i class="bi bi-hash me-1"></i>ID del Estudiante
+                                    </label>
+                                    <input type="text" class="form-control form-control-modern" id="studentId" name="id" required>
+                                </div>                                <div class="mb-3">
+                                    <label for="studentName" class="form-label fw-bold">
+                                        <i class="bi bi-person me-1"></i>Nombre del Estudiante
+                                    </label>
+                                    <input type="text" class="form-control form-control-modern" id="studentName" name="name" required>
+                                </div>
+                                <button type="submit" class="btn btn-modern btn-primary-grades">
+                                    <i class="bi bi-person-plus me-2"></i>Crear Estudiante
+                                </button>
+                            </form>
+                            <div id="studentCreateResult" class="mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-people me-2"></i>Estudiantes Registrados
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <button type="button" id="listStudentsBtn" class="btn btn-modern btn-secondary-grades mb-3">
+                                <i class="bi bi-list-ul me-2"></i>Listar Estudiantes
+                            </button>
+                            <div id="studentsList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestión de Cursos -->
+        <div class="tab-pane fade" id="courses" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-journal-plus me-2"></i>Crear Nuevo Curso
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="createCourseForm">
+                                <div class="mb-3">
+                                    <label for="courseId" class="form-label fw-bold">
+                                        <i class="bi bi-hash me-1"></i>ID del Curso
+                                    </label>
+                                    <input type="text" class="form-control form-control-modern" id="courseId" name="id" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="courseName" class="form-label fw-bold">
+                                        <i class="bi bi-journal-bookmark me-1"></i>Nombre del Curso
+                                    </label>
+                                    <input type="text" class="form-control form-control-modern" id="courseName" name="name" required>
+                                </div>
+                                <button type="submit" class="btn btn-modern btn-primary-grades">
+                                    <i class="bi bi-journal-plus me-2"></i>Crear Curso
+                                </button>
+                            </form>
+                            <div id="courseCreateResult" class="mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-journal-bookmark me-2"></i>Cursos Registrados
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <button type="button" id="listCoursesBtn" class="btn btn-modern btn-secondary-grades mb-3">
+                                <i class="bi bi-list-ul me-2"></i>Listar Cursos
+                            </button>
+                            <div id="coursesList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestión de Calificaciones -->
+        <div class="tab-pane fade" id="grades" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-123 me-2"></i>Calificación Numérica
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="numericGradeForm">
+                                <div class="mb-3">
+                                    <label for="numericStudentId" class="form-label fw-bold">
+                                        <i class="bi bi-person me-1"></i>Estudiante
+                                    </label>
+                                    <select class="form-select form-select-modern" id="numericStudentId" name="studentId" required>
+                                        <option value="">Seleccionar estudiante...</option>
+                                        <option th:each="student : ${students}" 
+                                                th:value="${student.id}" 
+                                                th:text="${student.name} + ' (ID: ' + ${student.id} + ')'">
+                                        </option>
+                                    </select>
+                                    <small class="form-text text-muted">Si no ves el estudiante, créalo primero en la pestaña "Estudiantes"</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="numericCourseId" class="form-label fw-bold">
+                                        <i class="bi bi-journal-bookmark me-1"></i>Curso
+                                    </label>
+                                    <select class="form-select form-select-modern" id="numericCourseId" name="courseId" required>
+                                        <option value="">Seleccionar curso...</option>
+                                        <option th:each="course : ${courses}" 
+                                                th:value="${course.id}" 
+                                                th:text="${course.name} + ' (ID: ' + ${course.id} + ')'">
+                                        </option>
+                                    </select>
+                                    <small class="form-text text-muted">Si no ves el curso, créalo primero en la pestaña "Cursos"</small>                                </div>
+                                <div class="mb-3">
+                                    <label for="numericValue" class="form-label fw-bold">
+                                        <i class="bi bi-123 me-1"></i>Calificación (0-10)
+                                    </label>
+                                    <input type="number" step="0.1" min="0" max="10" class="form-control form-control-modern" id="numericValue" name="value" required>
+                                </div>
+                                <button type="submit" class="btn btn-modern btn-primary-grades">
+                                    <i class="bi bi-check-circle me-2"></i>Asignar Calificación Numérica
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-award me-2"></i>Calificación Cualitativa
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="qualitativeGradeForm">
+                                <div class="mb-3">
+                                    <label for="qualitativeStudentId" class="form-label fw-bold">
+                                        <i class="bi bi-person me-1"></i>Estudiante
+                                    </label>
+                                    <select class="form-select form-select-modern" id="qualitativeStudentId" name="studentId" required>
+                                        <option value="">Seleccionar estudiante...</option>
+                                        <option th:each="student : ${students}" 
+                                                th:value="${student.id}" 
+                                                th:text="${student.name} + ' (ID: ' + ${student.id} + ')'">
+                                        </option>
+                                    </select>
+                                    <small class="form-text text-muted">Si no ves el estudiante, créalo primero en la pestaña "Estudiantes"</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="qualitativeCourseId" class="form-label fw-bold">
+                                        <i class="bi bi-journal-bookmark me-1"></i>Curso
+                                    </label>
+                                    <select class="form-select form-select-modern" id="qualitativeCourseId" name="courseId" required>
+                                        <option value="">Seleccionar curso...</option>
+                                        <option th:each="course : ${courses}" 
+                                                th:value="${course.id}" 
+                                                th:text="${course.name} + ' (ID: ' + ${course.id} + ')'">
+                                        </option>
+                                    </select>
+                                    <small class="form-text text-muted">Si no ves el curso, créalo primero en la pestaña "Cursos"</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="qualitativeValue" class="form-label fw-bold">
+                                        <i class="bi bi-award me-1"></i>Calificación
+                                    </label>
+                                    <select class="form-select form-select-modern" id="qualitativeValue" name="value" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="APROBO">APROBÓ</option>
+                                        <option value="REPROBO">REPROBÓ</option>
+                                        <option value="PENDIENTE">PENDIENTE</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-modern btn-secondary-grades">
+                                    <i class="bi bi-check-circle me-2"></i>Asignar Calificación Cualitativa
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div id="gradeResult"></div>
+                </div>
+            </div>
+        </div>        <!-- Ver Calificaciones -->
+        <div class="tab-pane fade" id="list-grades" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="glass-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-123 me-2"></i>Calificaciones Numéricas
+                            </h5>
+                            <button type="button" id="listNumericGradesBtn" class="btn btn-modern btn-primary-grades btn-sm">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Actualizar
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="numericGradesList">
+                                <div class="text-center text-muted">
+                                    <i class="bi bi-info-circle fs-2 mb-3 d-block"></i>
+                                    <p>Haz clic en "Actualizar" para cargar las calificaciones numéricas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="glass-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-award me-2"></i>Calificaciones Cualitativas
+                            </h5>
+                            <button type="button" id="listQualitativeGradesBtn" class="btn btn-modern btn-secondary-grades btn-sm">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Actualizar
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="qualitativeGradesList">
+                                <div class="text-center text-muted">
+                                    <i class="bi bi-info-circle fs-2 mb-3 d-block"></i>
+                                    <p>Haz clic en "Actualizar" para cargar las calificaciones cualitativas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estadísticas generales -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-graph-up me-2"></i>Resumen General
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-3 mb-3">
+                                    <div class="stats-card bg-primary text-white">
+                                        <h4 id="totalNumericGrades">0</h4>
+                                        <small>Calificaciones Numéricas</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="stats-card bg-success text-white">
+                                        <h4 id="totalQualitativeGrades">0</h4>
+                                        <small>Calificaciones Cualitativas</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="stats-card bg-info text-white">
+                                        <h4 id="totalStudents">0</h4>
+                                        <small>Estudiantes Activos</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="stats-card bg-warning text-white">
+                                        <h4 id="totalCourses">0</h4>
+                                        <small>Cursos Activos</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    
+    // === FUNCIONES DE UTILIDAD PARA AUTO-ACTUALIZACIÓN ===
+    
+    // Función para actualizar selectores de estudiantes
+    function updateStudentSelectors() {
+        $.get('/grades/students/options')
+            .done(function(students) {
+                $('#numericStudentId, #qualitativeStudentId').each(function() {
+                    var $select = $(this);
+                    var currentValue = $select.val();
+                    $select.empty().append('<option value="">Seleccionar estudiante...</option>');
+                    
+                    $.each(students, function(index, student) {
+                        var optionText = student.name + ' (ID: ' + student.id + ')';
+                        $select.append('<option value="' + student.id + '"' + 
+                                     (student.id === currentValue ? ' selected' : '') + '>' + 
+                                     optionText + '</option>');
+                    });
+                });
+                
+                // Actualizar contador en resumen
+                $('#totalStudents').text(students.length);
+            })
+            .fail(function() {
+                console.log('Error al actualizar selectores de estudiantes');
+            });
+    }
+    
+    // Función para actualizar selectores de cursos
+    function updateCourseSelectors() {
+        $.get('/grades/courses/options')
+            .done(function(courses) {
+                $('#numericCourseId, #qualitativeCourseId').each(function() {
+                    var $select = $(this);
+                    var currentValue = $select.val();
+                    $select.empty().append('<option value="">Seleccionar curso...</option>');
+                    
+                    $.each(courses, function(index, course) {
+                        var optionText = course.name + ' (ID: ' + course.id + ')';
+                        $select.append('<option value="' + course.id + '"' + 
+                                     (course.id === currentValue ? ' selected' : '') + '>' + 
+                                     optionText + '</option>');
+                    });
+                });
+                
+                // Actualizar contador en resumen
+                $('#totalCourses').text(courses.length);
+            })
+            .fail(function() {
+                console.log('Error al actualizar selectores de cursos');
+            });
+    }
+    
+    // Función para actualizar lista de estudiantes si está visible
+    function updateStudentsList() {
+        if ($('#studentsList').is(':visible') && $('#studentsList').children().length > 0) {
+            $('#listStudentsBtn').click();
+        }
+    }
+    
+    // Función para actualizar lista de cursos si está visible
+    function updateCoursesList() {
+        if ($('#coursesList').is(':visible') && $('#coursesList').children().length > 0) {
+            $('#listCoursesBtn').click();
+        }
+    }
+    
+    // Función para actualizar listas de calificaciones si están visibles
+    function updateGradeLists() {
+        if ($('#numericGradesList').is(':visible') && $('#numericGradesList').children().length > 0) {
+            $('#listNumericGradesBtn').click();
+        }
+        if ($('#qualitativeGradesList').is(':visible') && $('#qualitativeGradesList').children().length > 0) {
+            $('#listQualitativeGradesBtn').click();
+        }
+    }
+    
+    // Cargar datos iniciales
+    updateStudentSelectors();
+    updateCourseSelectors();
+    
+    // === FUNCIONES DE CREACIÓN CON AUTO-ACTUALIZACIÓN ===
+    
+    // Crear estudiante
+    $('#createStudentForm').on('submit', function(e) {
+        e.preventDefault();
+        $.post('/grades/students/create', $(this).serialize())
+            .done(function(data) {
+                $('#studentCreateResult').html(data);
+                
+                // Auto-actualizar todo lo relacionado con estudiantes
+                setTimeout(function() {
+                    updateStudentSelectors();
+                    updateStudentsList();
+                    updateGradeLists(); // Las listas de calificaciones también pueden cambiar
+                }, 500);
+                
+                // Limpiar formulario si fue exitoso
+                if (data.includes('alert-success')) {
+                    $('#createStudentForm')[0].reset();
+                }
+            })
+            .fail(function() {
+                $('#studentCreateResult').html('<div class="alert alert-danger">Error al crear estudiante</div>');
+            });
+    });
+
+    // Listar estudiantes
+    $('#listStudentsBtn').click(function() {
+        $.get('/grades/students/list')
+            .done(function(data) {
+                $('#studentsList').html(data);
+            })
+            .fail(function() {
+                $('#studentsList').html('<div class="alert alert-danger">Error al cargar estudiantes</div>');
+            });
+    });    // Crear curso
+    $('#createCourseForm').on('submit', function(e) {
+        e.preventDefault();
+        $.post('/grades/courses/create', $(this).serialize())
+            .done(function(data) {
+                $('#courseCreateResult').html(data);
+                
+                // Auto-actualizar todo lo relacionado con cursos
+                setTimeout(function() {
+                    updateCourseSelectors();
+                    updateCoursesList();
+                    updateGradeLists(); // Las listas de calificaciones también pueden cambiar
+                }, 500);
+                
+                // Limpiar formulario si fue exitoso
+                if (data.includes('alert-success')) {
+                    $('#createCourseForm')[0].reset();
+                }
+            })
+            .fail(function() {
+                $('#courseCreateResult').html('<div class="alert alert-danger">Error al crear curso</div>');
+            });
+    });
+
+    // Listar cursos
+    $('#listCoursesBtn').click(function() {
+        $.get('/grades/courses/list')
+            .done(function(data) {
+                $('#coursesList').html(data);
+            })
+            .fail(function() {
+                $('#coursesList').html('<div class="alert alert-danger">Error al cargar cursos</div>');
+            });
+    });    // Asignar calificación numérica
+    $('#numericGradeForm').on('submit', function(e) {
+        e.preventDefault();
+        $.post('/grades/assign/numeric', $(this).serialize())
+            .done(function(data) {
+                $('#gradeResult').html(data);
+                
+                // Auto-actualizar listas de calificaciones
+                setTimeout(function() {
+                    updateGradeLists();
+                }, 500);
+                
+                // Limpiar formulario si fue exitoso
+                if (data.includes('alert-success')) {
+                    $('#numericGradeForm')[0].reset();
+                }
+            })
+            .fail(function() {
+                $('#gradeResult').html('<div class="alert alert-danger">Error al asignar calificación numérica</div>');
+            });
+    });
+
+    // Asignar calificación cualitativa
+    $('#qualitativeGradeForm').on('submit', function(e) {
+        e.preventDefault();
+        $.post('/grades/assign/qualitative', $(this).serialize())
+            .done(function(data) {
+                $('#gradeResult').html(data);
+                
+                // Auto-actualizar listas de calificaciones
+                setTimeout(function() {
+                    updateGradeLists();
+                }, 500);
+                
+                // Limpiar formulario si fue exitoso
+                if (data.includes('alert-success')) {
+                    $('#qualitativeGradeForm')[0].reset();
+                }
+            })
+            .fail(function() {
+                $('#gradeResult').html('<div class="alert alert-danger">Error al asignar calificación cualitativa</div>');            });
+    });
+
+    // Cargar calificaciones numéricas
+    $('#listNumericGradesBtn').click(function() {
+        var $btn = $(this);
+        var originalText = $btn.html();
+        
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status"></span> Cargando...');
+        
+        $.get('/grades/numeric/list')
+            .done(function(data) {
+                $('#numericGradesList').html(data);
+                // Actualizar contador en resumen
+                updateSummaryCounters();
+            })
+            .fail(function() {
+                $('#numericGradesList').html('<div class="alert alert-danger">Error al cargar las calificaciones numéricas</div>');
+            })
+            .always(function() {
+                $btn.prop('disabled', false).html(originalText);
+            });
+    });
+
+    // Cargar calificaciones cualitativas
+    $('#listQualitativeGradesBtn').click(function() {
+        var $btn = $(this);
+        var originalText = $btn.html();
+        
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status"></span> Cargando...');
+        
+        $.get('/grades/qualitative/list')
+            .done(function(data) {
+                $('#qualitativeGradesList').html(data);
+                // Actualizar contador en resumen
+                updateSummaryCounters();
+            })
+            .fail(function() {
+                $('#qualitativeGradesList').html('<div class="alert alert-danger">Error al cargar las calificaciones cualitativas</div>');
+            })
+            .always(function() {
+                $btn.prop('disabled', false).html(originalText);
+            });
+    });
+
+    // Función para actualizar contadores en el resumen
+    function updateSummaryCounters() {
+        // Contar calificaciones numéricas
+        var numericCount = $('#numericGradesList table tbody tr').length;
+        if ($('#numericGradesList .alert-info').length > 0) {
+            numericCount = 0; // Si hay mensaje de "no hay datos", contador es 0
+        }
+        $('#totalNumericGrades').text(numericCount);
+
+        // Contar calificaciones cualitativas
+        var qualitativeCount = $('#qualitativeGradesList table tbody tr').length;
+        if ($('#qualitativeGradesList .alert-info').length > 0) {
+            qualitativeCount = 0; // Si hay mensaje de "no hay datos", contador es 0
+        }
+        $('#totalQualitativeGrades').text(qualitativeCount);
+    }
+
+    // Auto-cargar estadísticas básicas cuando se carga la pestaña "Ver Calificaciones"
+    $('button[data-bs-target="#list-grades"]').on('shown.bs.tab', function() {
+        // Cargar contadores de estudiantes y cursos
+        $.get('/grades/students/options')
+            .done(function(students) {
+                $('#totalStudents').text(students.length);
+            })
+            .fail(function() {
+                $('#totalStudents').text('?');
+            });
+
+        $.get('/grades/courses/options')
+            .done(function(courses) {
+                $('#totalCourses').text(courses.length);
+            })
+            .fail(function() {
+                $('#totalCourses').text('?');
+            });
+    });
+});
+</script>
 </body>
 </html>

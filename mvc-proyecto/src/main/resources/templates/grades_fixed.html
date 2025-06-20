@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Calificaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Portal Principal</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="/calc">Cálculo</a>
+                <a class="nav-link active" href="/grades">Calificaciones</a>
+                <a class="nav-link" href="/library">Biblioteca</a>
+            </div>
+        </div>
+    </nav>
+
+    <h1 class="mb-4">Gestión de Calificaciones</h1>
+
+    <!-- Pestañas para diferentes operaciones -->
+    <ul class="nav nav-tabs mb-4" id="gradesTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button" role="tab">Estudiantes</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="courses-tab" data-bs-toggle="tab" data-bs-target="#courses" type="button" role="tab">Cursos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="grades-tab" data-bs-toggle="tab" data-bs-target="#grades" type="button" role="tab">Calificaciones</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="gradesTabContent">
+        <!-- Gestión de Estudiantes -->
+        <div class="tab-pane fade show active" id="students" role="tabpanel">
+            <h3>Gestión de Estudiantes</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Crear Estudiante</h5>
+                    <form id="createStudentForm">
+                        <div class="mb-3">
+                            <label for="studentId" class="form-label">ID del Estudiante</label>
+                            <input type="text" class="form-control" id="studentId" name="id" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="studentName" class="form-label">Nombre del Estudiante</label>
+                            <input type="text" class="form-control" id="studentName" name="name" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Crear Estudiante</button>
+                    </form>
+                    <div id="studentCreateResult" class="mt-3"></div>
+                </div>
+                <div class="col-md-6">
+                    <h5>Estudiantes Registrados</h5>
+                    <button type="button" id="listStudentsBtn" class="btn btn-info mb-3">Listar Estudiantes</button>
+                    <div id="studentsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestión de Cursos -->
+        <div class="tab-pane fade" id="courses" role="tabpanel">
+            <h3>Gestión de Cursos</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Crear Curso</h5>
+                    <form id="createCourseForm">
+                        <div class="mb-3">
+                            <label for="courseId" class="form-label">ID del Curso</label>
+                            <input type="text" class="form-control" id="courseId" name="id" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="courseName" class="form-label">Nombre del Curso</label>
+                            <input type="text" class="form-control" id="courseName" name="name" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Crear Curso</button>
+                    </form>
+                    <div id="courseCreateResult" class="mt-3"></div>
+                </div>
+                <div class="col-md-6">
+                    <h5>Cursos Registrados</h5>
+                    <button type="button" id="listCoursesBtn" class="btn btn-info mb-3">Listar Cursos</button>
+                    <div id="coursesList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestión de Calificaciones -->
+        <div class="tab-pane fade" id="grades" role="tabpanel">
+            <h3>Asignar Calificaciones</h3>
+            
+            <!-- Botones para refrescar datos -->
+            <div class="row mb-3">
+                <div class="col-12">
+                    <button type="button" id="refreshSelectorsBtn" class="btn btn-outline-primary btn-sm">
+                        🔄 Actualizar Listas de Estudiantes y Cursos
+                    </button>
+                    <small class="text-muted ms-2">Haz clic aquí después de crear nuevos estudiantes o cursos</small>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Calificación Numérica</h5>
+                    <form id="numericGradeForm">
+                        <div class="mb-3">
+                            <label for="numericStudentId" class="form-label">Estudiante</label>
+                            <select class="form-control" id="numericStudentId" name="studentId" required>
+                                <option value="">Seleccionar estudiante...</option>
+                                <option th:each="student : ${students}" 
+                                        th:value="${student.id}" 
+                                        th:text="${student.name} + ' (ID: ' + ${student.id} + ')'">
+                                </option>
+                            </select>
+                            <small class="form-text text-muted">Si no ves el estudiante, créalo primero en la pestaña "Estudiantes"</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="numericCourseId" class="form-label">Curso</label>
+                            <select class="form-control" id="numericCourseId" name="courseId" required>
+                                <option value="">Seleccionar curso...</option>
+                                <option th:each="course : ${courses}" 
+                                        th:value="${course.id}" 
+                                        th:text="${course.name} + ' (ID: ' + ${course.id} + ')'">
+                                </option>
+                            </select>
+                            <small class="form-text text-muted">Si no ves el curso, créalo primero en la pestaña "Cursos"</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="numericValue" class="form-label">Calificación (0-10)</label>
+                            <input type="number" step="0.1" min="0" max="10" class="form-control" id="numericValue" name="value" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Asignar Calificación Numérica</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <h5>Calificación Cualitativa</h5>
+                    <form id="qualitativeGradeForm">
+                        <div class="mb-3">
+                            <label for="qualitativeStudentId" class="form-label">Estudiante</label>
+                            <select class="form-control" id="qualitativeStudentId" name="studentId" required>
+                                <option value="">Seleccionar estudiante...</option>
+                                <option th:each="student : ${students}" 
+                                        th:value="${student.id}" 
+                                        th:text="${student.name} + ' (ID: ' + ${student.id} + ')'">
+                                </option>
+                            </select>
+                            <small class="form-text text-muted">Si no ves el estudiante, créalo primero en la pestaña "Estudiantes"</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="qualitativeCourseId" class="form-label">Curso</label>
+                            <select class="form-control" id="qualitativeCourseId" name="courseId" required>
+                                <option value="">Seleccionar curso...</option>
+                                <option th:each="course : ${courses}" 
+                                        th:value="${course.id}" 
+                                        th:text="${course.name} + ' (ID: ' + ${course.id} + ')'">
+                                </option>
+                            </select>
+                            <small class="form-text text-muted">Si no ves el curso, créalo primero en la pestaña "Cursos"</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="qualitativeValue" class="form-label">Calificación</label>
+                            <select class="form-control" id="qualitativeValue" name="value" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="APROBO">APROBÓ</option>
+                                <option value="REPROBO">REPROBÓ</option>
+                                <option value="EXCELENTE">EXCELENTE</option>
+                                <option value="BUENO">BUENO</option>
+                                <option value="REGULAR">REGULAR</option>
+                                <option value="MALO">MALO</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Asignar Calificación Cualitativa</button>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div id="gradeResult"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Crear estudiante
+    $('#createStudentForm').on('submit', function(e) {
+        e.preventDefault();
+        $.post('/grades/students/create', $(this).serialize())
+            .done(function(data) {
+                $('#studentCreateResult').html(data);
+                // Auto-refrescar selectores después de crear estudiante
+                setTimeout(function() {
+                    $('#refreshSelectorsBtn').click();
+                }, 500);
+            })
+            .fail(function() {
+                $('#studentCreateResult').html('<div class="alert alert-danger">Error al crear estudiante</div>');
+            });
+    });
+
+    // Listar estudiantes
+    $('#listStudentsBtn').click(function() {
+        $.get('/grades/students/list')
+            .done(function(data) {
+                $('#studentsList').html(data);
+            })
+            .fail(function() {
+                $('#studentsList').html('<div class="alert alert-danger">Error al cargar estudiantes</div>');
+            });
+    });
+
+    // Crear curso
+    $('#createCourseForm').on('submit', function(e) {
+        e.preventDefault();
+        $.post('/grades/courses/create', $(this).serialize())
+            .done(function(data) {
+                $('#courseCreateResult').html(data);
+                // Auto-refrescar selectores después de crear curso
+                setTimeout(function() {
+                    $('#refreshSelectorsBtn').click();
+                }, 500);
+            })
+            .fail(function() {
+                $('#courseCreateResult').html('<div class="alert alert-danger">Error al crear curso</div>');
+            });
+    });
+
+    // Listar cursos
+    $('#listCoursesBtn').click(function() {
+        $.get('/grades/courses/list')
+            .done(function(data) {
+                $('#coursesList').html(data);
+            })
+            .fail(function() {
+                $('#coursesList').html('<div class="alert alert-danger">Error al cargar cursos</div>');
+            });
+    });
+
+    // Asignar calificación numérica
+    $('#numericGradeForm').on('submit', function(e) {
+        e.preventDefault();
+        $.post('/grades/grades/numeric', $(this).serialize())
+            .done(function(data) {
+                $('#gradeResult').html(data);
+            })
+            .fail(function() {
+                $('#gradeResult').html('<div class="alert alert-danger">Error al asignar calificación numérica</div>');
+            });
+    });
+
+    // Asignar calificación cualitativa
+    $('#qualitativeGradeForm').on('submit', function(e) {
+        e.preventDefault();
+        $.post('/grades/grades/qualitative', $(this).serialize())
+            .done(function(data) {
+                $('#gradeResult').html(data);
+            })
+            .fail(function() {
+                $('#gradeResult').html('<div class="alert alert-danger">Error al asignar calificación cualitativa</div>');
+            });
+    });
+
+    // Refrescar selectores dinámicamente
+    $('#refreshSelectorsBtn').click(function() {
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status"></span> Actualizando...');
+        
+        // Cargar estudiantes
+        $.get('/grades/students/options')
+            .done(function(students) {
+                $('#numericStudentId, #qualitativeStudentId').each(function() {
+                    var $select = $(this);
+                    var currentValue = $select.val();
+                    $select.empty().append('<option value="">Seleccionar estudiante...</option>');
+                    
+                    $.each(students, function(index, student) {
+                        var optionText = student.name + ' (ID: ' + student.id + ')';
+                        $select.append('<option value="' + student.id + '"' + 
+                                     (student.id === currentValue ? ' selected' : '') + '>' + 
+                                     optionText + '</option>');
+                    });
+                });
+            })
+            .fail(function() {
+                alert('Error al cargar estudiantes');
+            });
+
+        // Cargar cursos
+        $.get('/grades/courses/options')
+            .done(function(courses) {
+                $('#numericCourseId, #qualitativeCourseId').each(function() {
+                    var $select = $(this);
+                    var currentValue = $select.val();
+                    $select.empty().append('<option value="">Seleccionar curso...</option>');
+                    
+                    $.each(courses, function(index, course) {
+                        var optionText = course.name + ' (ID: ' + course.id + ')';
+                        $select.append('<option value="' + course.id + '"' + 
+                                     (course.id === currentValue ? ' selected' : '') + '>' + 
+                                     optionText + '</option>');
+                    });
+                });
+                
+                // Restaurar botón
+                $btn.prop('disabled', false).html('🔄 Actualizar Listas de Estudiantes y Cursos');
+            })
+            .fail(function() {
+                alert('Error al cargar cursos');
+                $btn.prop('disabled', false).html('🔄 Actualizar Listas de Estudiantes y Cursos');
+            });
+    });
+});
+</script>
+</body>
+</html>

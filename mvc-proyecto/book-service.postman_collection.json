@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "4c282f79-570a-4114-896e-c16f15381501",
+		"name": "book-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28388236"
+	},
+	"item": [
+		{
+			"name": "Crear usuario",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Ana Pérez\",\"role\":\"ESTUDIANTE\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Reporte",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8090/report"
+			},
+			"response": []
+		},
+		{
+			"name": "Prestamos",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8090/loans"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener prestamo",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8090/loans/d331195c-ca99-48f2-8679-1f9cdd0451a2"
+			},
+			"response": []
+		},
+		{
+			"name": "crear prestamo",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"userId\":\"bab4e4af-a2c2-433b-bd00-aa30ddd6882a\",\"isbn\":\"9788425346475\",\"loanDate\":\"2025-07-10\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/loans"
+			},
+			"response": []
+		},
+		{
+			"name": "Listar libros",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8090/books"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener libro",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8090/books/9788425346475"
+			},
+			"response": []
+		},
+		{
+			"name": "Crear libro",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\":\"El Principito\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8090/books"
+			},
+			"response": []
+		},
+		{
+			"name": "Listar usuarios",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8090/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener usuario",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8090/users/c8549f8f-e2cd-42f0-a31e-e2a8c0d5ee77"
+			},
+			"response": []
+		}
+	]
+}

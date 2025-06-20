@@ -1,70 +1,94 @@
 package com.example.mvcproyecto.controller;
 
+import com.example.mvcproyecto.model.IntegrationRequest;
+import com.example.mvcproyecto.model.MatrixRequest;
+import com.example.mvcproyecto.service.CalculationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @Controller
+@RequestMapping("/calc")
 public class CalculationMvcController {
 
-    private final WebClient client;
+    private final CalculationService calculationService;
     private final ObjectMapper mapper;
 
-    @Value("${calc.service.url}")
-    private String baseUrl;
-
-    public CalculationMvcController(WebClient client, ObjectMapper mapper) {
-        this.client = client;
+    public CalculationMvcController(CalculationService calculationService, ObjectMapper mapper) {
+        this.calculationService = calculationService;
         this.mapper = mapper;
     }
 
-    @GetMapping("/calc")
+    @GetMapping
     public String calcPage() {
         return "calc";
     }
 
-    @PostMapping("/mvc/calc/matrix")
-    public String multiply(
-            @RequestParam String a,
-            @RequestParam String b,
-            Model model) throws Exception {
-        int[][] aArr = mapper.readValue(a, int[][].class);
-        int[][] bArr = mapper.readValue(b, int[][].class);
-        Mono<Map> response = client.post()
-                .uri(baseUrl + "/matrix")
-                .bodyValue(Map.of("a", aArr, "b", bArr))
-                .retrieve()
-                .bodyToMono(Map.class);
-        Map res = response.block();
-        model.addAttribute("matrixResult", res);
+    @PostMapping("/matrix")
+    public String multiplyMatrices(
+            @RequestParam String matrixA,
+            @RequestParam String matrixB,
+            Model model) {
+        
+        try {
+            int[][] aArr = mapper.readValue(matrixA, int[][].class);
+            int[][] bArr = mapper.readValue(matrixB, int[][].class);
+            
+            MatrixRequest request = new MatrixRequest(aArr, bArr);
+            Map<String, Object> result = calculationService.multiplyMatrices(request).block();
+            
+            model.addAttribute("matrixResult", result);
+        } catch (Exception e) {
+            model.addAttribute("matrixResult", Map.of("error", "Error al procesar las matrices: " + e.getMessage()));
+        }
+        
         return "fragments :: matrixResult";
     }
 
-    @PostMapping("/mvc/calc/integrate")
-    public String integrate(
+    @PostMapping("/integrate")
+    public String integrateFunction(
             @RequestParam double lower,
             @RequestParam double upper,
             @RequestParam int subintervals,
             @RequestParam int threads,
             Model model) {
-        Mono<Map> response = client.post()
-                .uri(baseUrl + "/integrate")
-                .bodyValue(Map.of(
-                        "lower", lower,
-                        "upper", upper,
-                        "subintervals", subintervals,
-                        "threads", threads))
-                .retrieve()
-                .bodyToMono(Map.class);
-        Map res = response.block();
-        model.addAttribute("integrateResult", res);
+        
+        IntegrationRequest request = new IntegrationRequest(lower, upper, subintervals, threads);
+        Map<String, Object> result = calculationService.integrateFunction(request).block();
+        
+        model.addAttribute("integrateResult", result);
         return "fragments :: integrateResult";
+    }
+
+    // Endpoints JSON para el frontend dinámico
+    
+    @PostMapping("/matrix/json")
+    @ResponseBody
+    public Map<String, Object> multiplyMatricesJson(@RequestBody Map<String, Object> requestData) {
+        try {
+            Object aObj = requestData.get("a");
+            Object bObj = requestData.get("b");
+            
+            int[][] aArr = mapper.convertValue(aObj, int[][].class);
+            int[][] bArr = mapper.convertValue(bObj, int[][].class);
+            
+            MatrixRequest request = new MatrixRequest(aArr, bArr);
+            return calculationService.multiplyMatrices(request).block();
+        } catch (Exception e) {
+            return Map.of("error", "Error al procesar las matrices: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/integrate/json")
+    @ResponseBody
+    public Map<String, Object> integrateFunctionJson(@RequestBody IntegrationRequest request) {
+        try {
+            return calculationService.integrateFunction(request).block();
+        } catch (Exception e) {
+            return Map.of("error", "Error al calcular la integración: " + e.getMessage());
+        }
     }
 }

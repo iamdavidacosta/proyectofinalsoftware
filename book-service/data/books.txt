@@ -3,3 +3,11 @@
 9788466323466;Cien años de soledad
 55136570-5415-4c73-b4ec-9f2ea9a80c4d;El Principito
 62f729bf-2ced-4cbc-a302-0a1a6a834013;El Principite
+0accca4f-32a2-4968-b71b-1a907d06b19f;La odisea
+dbae80b8-687a-46af-bd93-5bb46ef1fca0;Codigo limpio
+4f16206d-93c5-4600-a67a-22cf21917ffe;Arquitectura
+2df83a91-3530-47b3-923f-a3a827cb881b;juanito
+f30faacc-cc9b-4ee6-b6fd-011fb9b47a30;juanito 2
+dbf8abda-3e53-49c7-b55e-fc3c67ca9608;David 2
+e6080fc6-141c-42e4-87bf-7aece4d7b782;integral
+9041b077-461b-407f-96cf-29b25eb54d48;juanw
